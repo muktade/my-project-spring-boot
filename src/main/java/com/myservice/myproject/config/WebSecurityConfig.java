@@ -3,6 +3,7 @@ package com.myservice.myproject.config;
 //import com.myservice.myproject.config.LoggingAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,15 +18,9 @@ public class WebSecurityConfig {
 //    private LoggingAccessDeniedHandler loggingAccessDeniedHandler;
 
     private static final String[] WHITE_LIST_USER={
-            "/hello", "/register", "/sendVerificationToken","/verifyUser"
+            "/hello", "/register", "/sendVerificationToken*","/verifyUser*"
     };
 
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-
-        return new BCryptPasswordEncoder(11);
-    }
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -39,6 +34,11 @@ public class WebSecurityConfig {
 //                .antMatchers("/static/**", "/dist/**", "/css/**", "/fonts/**", "/js/**", "/images/**", "/ie8-panel/**").permitAll()
                 .antMatchers(WHITE_LIST_USER).permitAll()
 //                .anyRequest().authenticated()
+//                .antMatchers("/api/**").authenticated()
+//                .and()
+//                .oauth2Login(oauth2login ->
+//                        oauth2login.loginPage("/oauth2/authorization/api-client-oidc"))
+//                .oauth2Client(Customizer.withDefaults())
         ;
 //                .and().formLogin().loginPage("/login").permitAll()
 //                .successForwardUrl("/loginsuccess")
